@@ -1,4 +1,4 @@
-import { V1_SUBGRAPH_URL, V2_SUBGRAPH_URL } from './config/url'
+import { V1_SUBGRAPH_URL, V2_SUBGRAPH_URL } from '../config/url'
 
 export interface Swap {
   id: String

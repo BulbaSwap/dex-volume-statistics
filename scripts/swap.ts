@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { V3_SUBGRAPH_URL } from './config/url'
-import { Swap, SUBGRAPH_URL, V3Swap } from './interface'
+import { V3_SUBGRAPH_URL } from '../config/url'
+import { Swap, SUBGRAPH_URL, V3Swap } from '../interface'
 
 export const getSwaps = async (
   url: SUBGRAPH_URL,

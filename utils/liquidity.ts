@@ -26,7 +26,7 @@ const getV1OrV2Liquidity = async (
   const tmpPath = path.join(__dirname, `../data/${type}/liquidity/tmp.json`)
   const tmpFileData = await readJson(tmpPath).catch(() => {})
   const obj = Object.assign({}, tmpFileData)
-  data.forEach((item) => {
+  data.forEach(item => {
     const count = obj[item.to.toLowerCase()]
     if (count) {
       obj[item.to.toLowerCase()] = count + 1
@@ -49,7 +49,7 @@ const getV3Liquidity = async (pool: string, token0Amount: number, token1Amount: 
   const tmpPath = path.join(__dirname, '../data/v3/liquidity/tmp.json')
   const tmpFileData = await readJson(tmpPath).catch(() => {})
   const obj = Object.assign({}, tmpFileData)
-  data.forEach((item) => {
+  data.forEach(item => {
     const count = obj[item.origin.toLowerCase()]
     if (count) {
       obj[item.origin.toLowerCase()] = count + 1

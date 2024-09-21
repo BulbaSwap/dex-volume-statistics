@@ -26,7 +26,7 @@ const getV1OrV2Swap = async (
   const tmpPath = path.join(__dirname, `../data/${type}/swap/tmp.json`)
   const tmpFileData = await readJson(tmpPath).catch(() => {})
   const obj = Object.assign({}, tmpFileData)
-  data.forEach((item) => {
+  data.forEach(item => {
     const count = obj[item.from.toLowerCase()]
     if (count) {
       obj[item.from.toLowerCase()] = count + 1
@@ -49,7 +49,7 @@ const getV3Swap = async (pool: string, token0Amount: number, token1Amount: numbe
   const tmpPath = path.join(__dirname, '../data/v3/swap/tmp.json')
   const tmpFileData = await readJson(tmpPath).catch(() => {})
   const obj = Object.assign({}, tmpFileData)
-  data.forEach((item) => {
+  data.forEach(item => {
     const count = obj[item.origin.toLowerCase()]
     if (count) {
       obj[item.origin.toLowerCase()] = count + 1

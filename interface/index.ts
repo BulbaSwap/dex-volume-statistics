@@ -30,4 +30,8 @@ export interface V3Liquidity {
   amount1: string
 }
 
+export interface AddressJson {
+  [x: string]: number
+}
+
 export type SUBGRAPH_URL = typeof V1_SUBGRAPH_URL | typeof V2_SUBGRAPH_URL

@@ -42,8 +42,8 @@ const writeLiquidityAddress = async (deleteTmp = true) => {
 }
 
 const main = async () => {
-  await writeSwapAddress()
-  await writeLiquidityAddress()
+  // await writeSwapAddress(false)
+  await writeLiquidityAddress(false)
 }
 
 main()

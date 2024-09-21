@@ -13,7 +13,7 @@ export const getV1OrV2LiquiditySubgraph = async (
   const res = await axios.post(url, {
     query: `
       {
-        liquidityPositionSnapshots(
+        mints(
           first: ${FIRST}
           skip: ${skip}
           orderBy: timestamp
@@ -25,8 +25,8 @@ export const getV1OrV2LiquiditySubgraph = async (
               },
               {
                 or: [
-                  { reserve0_gte: ${token0Amount} },
-                  { reserve1_gte: ${token1Amount} }
+                  { amount0_gte: ${token0Amount} },
+                  { amount1_gte: ${token1Amount} }
                 ]
               }
             ]
@@ -34,13 +34,14 @@ export const getV1OrV2LiquiditySubgraph = async (
         ) {
           id
           timestamp
-          reserve0
-          reserve1
+          to
+          amount0
+          amount1
         }
       }
       `
   })
-  return res?.data?.data?.liquidityPositionSnapshots ?? []
+  return res?.data?.data?.mints ?? []
 }
 
 export const getV3LiquiditySubgraph = async (
@@ -52,7 +53,7 @@ export const getV3LiquiditySubgraph = async (
   const res = await axios.post(V3_SUBGRAPH_URL, {
     query: `
       {
-        positionSnapshots(
+        mints(
           first: ${FIRST}
           skip: ${skip}
           orderBy: timestamp
@@ -64,8 +65,8 @@ export const getV3LiquiditySubgraph = async (
               },
               {
                 or: [
-                  { depositedToken0_gte: ${token0Amount} },
-                  { depositedToken1_gte: ${token1Amount} }
+                  { amount0_gte: ${token0Amount} },
+                  { amount1_gte: ${token1Amount} }
                 ]
               }
             ]
@@ -73,11 +74,12 @@ export const getV3LiquiditySubgraph = async (
         ) {
           id
           timestamp
-          owner
-          liquidity
+          origin
+          amount0
+          amount1
         }
       }
       `
   })
-  return res?.data?.data?.positionSnapshots ?? []
+  return res?.data?.data?.mints ?? []
 }

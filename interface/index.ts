@@ -16,16 +16,18 @@ export interface V3Swap {
 
 export interface Liquidity {
   id: string
-  timestamp: number
-  reserve0: string
-  reserve1: string
+  timestamp: string
+  to: string
+  amount0: string
+  amount1: string
 }
 
 export interface V3Liquidity {
   id: string
   timestamp: string
-  owner: string
-  liquidity: string
+  origin: string
+  amount0: string
+  amount1: string
 }
 
 export type SUBGRAPH_URL = typeof V1_SUBGRAPH_URL | typeof V2_SUBGRAPH_URL

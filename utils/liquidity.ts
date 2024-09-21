@@ -23,12 +23,7 @@ const getV1OrV2Liquidity = async (
     token1Amount,
     skip
   )
-  const addressSet = new Set(
-    data.map(item => {
-      const address = item.id.split('-')[1]?.replace(item.timestamp.toString(), '')?.toLowerCase() ?? ''
-      return address
-    })
-  )
+  const addressSet = new Set(data.map(item => item.to.toLowerCase()))
   const addressArr = Array.from(addressSet)
   console.log('addressArr length: ', addressArr.length)
   const jsonPath = path.join(__dirname, `../data/${type}/liquidity/tmp.json`)
@@ -47,7 +42,7 @@ const getV3Liquidity = async (pool: string, token0Amount: number, token1Amount: 
     `type: v3 liquidity, pool: ${pool}, token0Amount: ${token0Amount}, token1Amount: ${token1Amount}, skip: ${skip}`
   )
   const data = await getV3LiquiditySubgraph(pool, token0Amount, token1Amount, skip)
-  const addressSet = new Set(data.map(item => item.owner.toLowerCase()))
+  const addressSet = new Set(data.map(item => item.origin.toLowerCase()))
   const addressArr = Array.from(addressSet)
   console.log('addressArr length: ', addressArr.length)
   const jsonPath = path.join(__dirname, '../data/v3/liquidity/tmp.json')

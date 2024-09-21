@@ -51,103 +51,103 @@ export const V2_POOLS = {
 }
 
 export const V3_POOLS = {
+  // WETH/USDT 1%
   '0x21e66adc475cd2f59723eb35b34d93a8355741fd': {
-    // WETH/USDT 1%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.USDT
   },
+  // WETH/USDT 0.3%
   '0xb8fbc65dc7b1ee478e472af0047a39eda5428123': {
-    // WETH/USDT 0.3%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.USDT
   },
+  // WETH/USDT 0.05%
   '0xb887ee12626e03f81dc23b5b0b604403af12fb31': {
-    // WETH/USDT 0.05%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.USDT
   },
+  // WETH/USDC 0.01%
   '0x9120229c697e4de17612b07dd6de366e4f165fd6': {
-    // WETH/USDC 0.01%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.USDC
   },
+  // WETH/USDC 0.3%
   '0x5cf4b5445e2e6939807c7655738fe5f5dcbc64fe': {
-    // WETH/USDC 0.3%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.USDC
   },
+  // WETH/USDC 0.05%
   '0x21c78e2c10596a088bca5e77cf2116cef9deef21': {
-    // WETH/USDC 0.05%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.USDC
   },
+  // WETH/USDC 1%
   '0xec7d6cc3f5a5b2a4788abcd47d7036516ca5ee8f': {
-    // WETH/USDC 1%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.USDC
   },
+  // WETH/wstETH 1%
   '0x37586420b907d8f688814dcf5e0318d86c74be84': {
-    // WETH/wstETH 1%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.wstETH
   },
+  // WETH/wstETH 0.01%
   '0x777a23a7ce1df9a14265b8bec2aeb46dfd3e018d': {
-    // WETH/wstETH 0.01%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.wstETH
   },
+  // WETH/wstETH 0.05%
   '0x6fd8428038515cce24aa22a1077ceab6d358b778': {
-    // WETH/wstETH 0.05%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.wstETH
   },
+  // WETH/wstETH 0.3%
   '0x76a8bfed1dc4e895f30af7605190be5eb91b11a5': {
-    // WETH/wstETH 0.3%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.wstETH
   },
+  // WETH/weETH 1%
   '0x7464cf5230844853c28706314a158c0e9f7680e7': {
-    // WETH/weETH 1%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.weETH
   },
+  // WETH/weETH 0.3%
   '0xd02a2b29259f452570cf293cb8aaaad82184522c': {
-    // WETH/weETH 0.3%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.weETH
   },
+  // WETH/weETH 0.05%
   '0xf9d92d80d72a73ffae0050a446841cb8b9a1f0de': {
-    // WETH/weETH 0.05%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.weETH
   },
+  // WETH/weETH 0.01%
   '0x99d04708c377628432deec604bc30e9e627b6036': {
-    // WETH/weETH 0.01%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.weETH
   },
+  // WETH/WBTC 0.05%
   '0xa28e00db10e8b3a712bdbbec7a18b4bd53887437': {
-    // WETH/WBTC 0.05%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.WBTC
   },
+  // WETH/WBTC 0.3%
   '0xb9ce7d13e6c2261bdada9f4bcadb88ac13d86979': {
-    // WETH/WBTC 0.3%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.WBTC
   },
+  // WETH/WBTC 1%
   '0xe1676fcc715a5f8b8508b6104c54b4c642e14a3f': {
-    // WETH/WBTC 1%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.WBTC
   },
+  // WETH/WBTC 0.01%
   '0x33f5cd5e0a1da42d882bee91cafed8151d45dbc3': {
-    // WETH/WBTC 0.01%
     token0: V2_TOKENS.WETH,
     token1: V2_TOKENS.WBTC
   },
+  // USDT/USDC 0.01%
   '0x9e5ab400737a51c077913a50762f4fc5f96006ef': {
-    // USDT/USDC 0.01%
     token0: V2_TOKENS.USDT,
     token1: V2_TOKENS.USDC
   }

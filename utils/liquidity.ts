@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { V3_SUBGRAPH_URL } from '../config/url'
 import { Swap, SUBGRAPH_URL, V3Swap } from '../interface'
-import { FIRST } from './const'
+import { FIRST } from '../constants'
 
 export const getV1OrV2Liquidity = async (
   url: SUBGRAPH_URL,

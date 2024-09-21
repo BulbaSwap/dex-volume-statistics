@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { V3_SUBGRAPH_URL } from '../config/url'
 import { Swap, SUBGRAPH_URL, V3Swap } from '../interface'
-import { FIRST } from './const'
+import { FIRST } from '../constants'
 
 export const getV1OrV2Swaps = async (
   url: SUBGRAPH_URL,
@@ -43,7 +43,12 @@ export const getV1OrV2Swaps = async (
   return res?.data?.data?.swaps ?? []
 }
 
-export const getV3Swaps = async (pool: string, skip: number): Promise<V3Swap[]> => {
+export const getV3Swaps = async (
+  pool: string,
+  token0Amount: number,
+  token1Amount: number,
+  skip: number
+): Promise<V3Swap[]> => {
   const res = await axios.post(V3_SUBGRAPH_URL, {
     query: `
       {
@@ -53,7 +58,17 @@ export const getV3Swaps = async (pool: string, skip: number): Promise<V3Swap[]> 
           orderBy: timestamp
           orderDirection: asc
           where: {
-            pool_: { id: "${pool.toLowerCase()}" }
+            and: [
+              {
+                pool_: { id: "${pool.toLowerCase()}" },
+              },
+              {
+                or: [
+                  { amount0_gte: ${token0Amount} },
+                  { amount1_gte: ${token1Amount} }
+                ]
+              }
+            ]
           }
         ) {
           id

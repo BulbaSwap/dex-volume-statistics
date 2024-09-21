@@ -1,16 +1,58 @@
 import { writeToPath } from 'fast-csv'
 import path from 'path'
-import { V1_POOLS, V1_SUBGRAPH_URL, V2_POOLS, V2_SUBGRAPH_URL } from '../config'
-import { delay, FIRST, getV1OrV2Swaps } from '../utils'
+import { V1_POOLS, V1_SUBGRAPH_URL, V2_POOLS, V2_SUBGRAPH_URL, V3_POOLS } from '../config'
+import { delay, getV1OrV2Swaps, getV3Swaps } from '../utils'
+import { FIRST } from '../constants'
 
-const getV1OrV2Swap = async (type: 'v1' | 'v2', arr: string[], pool: string, token0Amount: number, token1Amount: number, skip: number) => {
-  console.log(`type: ${type}, pool: ${pool}, token0Amount: ${token0Amount}, token1Amount: ${token1Amount}, skip: ${skip}`)
-  const data = await getV1OrV2Swaps(type === 'v1' ? V1_SUBGRAPH_URL : V2_SUBGRAPH_URL, pool, token0Amount, token1Amount, skip)
+const getV1OrV2Swap = async (
+  type: 'v1' | 'v2',
+  arr: string[],
+  pool: string,
+  token0Amount: number,
+  token1Amount: number,
+  skip: number
+) => {
+  console.log(
+    `type: ${type} swap, pool: ${pool}, token0Amount: ${token0Amount}, token1Amount: ${token1Amount}, skip: ${skip}`
+  )
+  const data = await getV1OrV2Swaps(
+    type === 'v1' ? V1_SUBGRAPH_URL : V2_SUBGRAPH_URL,
+    pool,
+    token0Amount,
+    token1Amount,
+    skip
+  )
   const addressArr = [...arr, ...data.map(item => item.from.toLowerCase())]
   console.log('addressArr length: ', addressArr.length)
   if (data.length === FIRST) {
     await delay()
     return await getV1OrV2Swap(type, addressArr, pool, token0Amount, token1Amount, skip + FIRST)
+  }
+  console.log('return addressArr length: ', addressArr.length)
+  return addressArr
+}
+
+const getV3Swap = async (
+  arr: string[],
+  pool: string,
+  token0Amount: number,
+  token1Amount: number,
+  skip: number
+) => {
+  console.log(
+    `type: v3 swap, pool: ${pool}, token0Amount: ${token0Amount}, token1Amount: ${token1Amount}, skip: ${skip}`
+  )
+  const data = await getV3Swaps(
+    pool,
+    token0Amount,
+    token1Amount,
+    skip
+  )
+  const addressArr = [...arr, ...data.map(item => item.origin.toLowerCase())]
+  console.log('addressArr length: ', addressArr.length)
+  if (data.length === FIRST) {
+    await delay()
+    return await getV3Swap(addressArr, pool, token0Amount, token1Amount, skip + FIRST)
   }
   console.log('return addressArr length: ', addressArr.length)
   return addressArr
@@ -52,9 +94,28 @@ const writeV2SwapAddress = async () => {
     })
 }
 
+const writeV3SwapAddress = async () => {
+  let arr: string[] = []
+  for (const [pool, tokens] of Object.entries(V3_POOLS)) {
+    arr = await getV3Swap(arr, pool, tokens.token0.minSwapAmount, tokens.token1.minSwapAmount, 0)
+  }
+  const set = new Set(arr)
+  const address = Array.from(set)
+  const rows = address.sort().map(item => [item])
+  const outputPath = path.join(__dirname, '../data/v3/swap/address.csv')
+  writeToPath(outputPath, rows, { headers: false })
+    .on('finish', () => {
+      console.log('🚀 ~ CSV created:', outputPath)
+    })
+    .on('error', error => {
+      console.error('CSV create failed:', error)
+    })
+}
+
 const main = async () => {
   // await writeV1SwapAddress()
-  await writeV2SwapAddress()
+  // await writeV2SwapAddress()
+  await writeV3SwapAddress()
 }
 
 main()

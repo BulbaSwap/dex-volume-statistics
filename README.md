@@ -25,3 +25,9 @@ yarn install
 ```bash
 yarn data
 ```
+
+## Total analysis
+
+```bash
+yarn total
+```

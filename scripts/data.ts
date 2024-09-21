@@ -1,121 +1,49 @@
-import { writeToPath } from 'fast-csv'
 import path from 'path'
-import { V1_POOLS, V1_SUBGRAPH_URL, V2_POOLS, V2_SUBGRAPH_URL, V3_POOLS } from '../config'
-import { delay, getV1OrV2Swaps, getV3Swaps } from '../utils'
-import { FIRST } from '../constants'
+import { remove } from 'fs-extra'
+import {
+  writeV1LiquidityAddress,
+  writeV1SwapAddress,
+  writeV2LiquidityAddress,
+  writeV2SwapAddress,
+  writeV3LiquidityAddress,
+  writeV3SwapAddress
+} from '../utils'
 
-const getV1OrV2Swap = async (
-  type: 'v1' | 'v2',
-  arr: string[],
-  pool: string,
-  token0Amount: number,
-  token1Amount: number,
-  skip: number
-) => {
-  console.log(
-    `type: ${type} swap, pool: ${pool}, token0Amount: ${token0Amount}, token1Amount: ${token1Amount}, skip: ${skip}`
-  )
-  const data = await getV1OrV2Swaps(
-    type === 'v1' ? V1_SUBGRAPH_URL : V2_SUBGRAPH_URL,
-    pool,
-    token0Amount,
-    token1Amount,
-    skip
-  )
-  const addressArr = [...arr, ...data.map(item => item.from.toLowerCase())]
-  console.log('addressArr length: ', addressArr.length)
-  if (data.length === FIRST) {
-    await delay()
-    return await getV1OrV2Swap(type, addressArr, pool, token0Amount, token1Amount, skip + FIRST)
+const writeSwapAddress = async (deleteTmp = true) => {
+  if (deleteTmp) {
+    const jsonV1SwapTmpPath = path.join(__dirname, '../data/v1/swap/tmp.json')
+    const jsonV2SwapTmpPath = path.join(__dirname, '../data/v2/swap/tmp.json')
+    const jsonV3SwapTmpPath = path.join(__dirname, '../data/v3/swap/tmp.json')
+
+    await remove(jsonV1SwapTmpPath).catch(() => {})
+    await remove(jsonV2SwapTmpPath).catch(() => {})
+    await remove(jsonV3SwapTmpPath).catch(() => {})
   }
-  console.log('return addressArr length: ', addressArr.length)
-  return addressArr
+
+  await writeV1SwapAddress()
+  await writeV2SwapAddress()
+  await writeV3SwapAddress()
 }
 
-const getV3Swap = async (
-  arr: string[],
-  pool: string,
-  token0Amount: number,
-  token1Amount: number,
-  skip: number
-) => {
-  console.log(
-    `type: v3 swap, pool: ${pool}, token0Amount: ${token0Amount}, token1Amount: ${token1Amount}, skip: ${skip}`
-  )
-  const data = await getV3Swaps(
-    pool,
-    token0Amount,
-    token1Amount,
-    skip
-  )
-  const addressArr = [...arr, ...data.map(item => item.origin.toLowerCase())]
-  console.log('addressArr length: ', addressArr.length)
-  if (data.length === FIRST) {
-    await delay()
-    return await getV3Swap(addressArr, pool, token0Amount, token1Amount, skip + FIRST)
-  }
-  console.log('return addressArr length: ', addressArr.length)
-  return addressArr
-}
+const writeLiquidityAddress = async (deleteTmp = true) => {
+  if (deleteTmp) {
+    const jsonV1LiquidityTmpPath = path.join(__dirname, '../data/v1/liquidity/tmp.json')
+    const jsonV2LiquidityTmpPath = path.join(__dirname, '../data/v2/liquidity/tmp.json')
+    const jsonV3LiquidityTmpPath = path.join(__dirname, '../data/v3/liquidity/tmp.json')
 
-const writeV1SwapAddress = async () => {
-  let arr: string[] = []
-  for (const [pool, tokens] of Object.entries(V1_POOLS)) {
-    arr = await getV1OrV2Swap('v1', arr, pool, tokens.token0.minSwapAmount, tokens.token1.minSwapAmount, 0)
+    await remove(jsonV1LiquidityTmpPath).catch(() => {})
+    await remove(jsonV2LiquidityTmpPath).catch(() => {})
+    await remove(jsonV3LiquidityTmpPath).catch(() => {})
   }
-  const set = new Set(arr)
-  const address = Array.from(set)
-  const rows = address.sort().map(item => [item])
-  const outputPath = path.join(__dirname, '../data/v1/swap/address.csv')
-  writeToPath(outputPath, rows, { headers: false })
-    .on('finish', () => {
-      console.log('🚀 ~ CSV created:', outputPath)
-    })
-    .on('error', error => {
-      console.error('CSV create failed:', error)
-    })
-}
 
-const writeV2SwapAddress = async () => {
-  let arr: string[] = []
-  for (const [pool, tokens] of Object.entries(V2_POOLS)) {
-    arr = await getV1OrV2Swap('v2', arr, pool, tokens.token0.minSwapAmount, tokens.token1.minSwapAmount, 0)
-  }
-  const set = new Set(arr)
-  const address = Array.from(set)
-  const rows = address.sort().map(item => [item])
-  const outputPath = path.join(__dirname, '../data/v2/swap/address.csv')
-  writeToPath(outputPath, rows, { headers: false })
-    .on('finish', () => {
-      console.log('🚀 ~ CSV created:', outputPath)
-    })
-    .on('error', error => {
-      console.error('CSV create failed:', error)
-    })
-}
-
-const writeV3SwapAddress = async () => {
-  let arr: string[] = []
-  for (const [pool, tokens] of Object.entries(V3_POOLS)) {
-    arr = await getV3Swap(arr, pool, tokens.token0.minSwapAmount, tokens.token1.minSwapAmount, 0)
-  }
-  const set = new Set(arr)
-  const address = Array.from(set)
-  const rows = address.sort().map(item => [item])
-  const outputPath = path.join(__dirname, '../data/v3/swap/address.csv')
-  writeToPath(outputPath, rows, { headers: false })
-    .on('finish', () => {
-      console.log('🚀 ~ CSV created:', outputPath)
-    })
-    .on('error', error => {
-      console.error('CSV create failed:', error)
-    })
+  await writeV1LiquidityAddress()
+  await writeV2LiquidityAddress()
+  await writeV3LiquidityAddress()
 }
 
 const main = async () => {
-  // await writeV1SwapAddress()
-  // await writeV2SwapAddress()
-  await writeV3SwapAddress()
+  await writeSwapAddress()
+  await writeLiquidityAddress()
 }
 
 main()

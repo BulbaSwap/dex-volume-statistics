@@ -1,17 +1,31 @@
 import { V1_SUBGRAPH_URL, V2_SUBGRAPH_URL } from '../config/url'
 
 export interface Swap {
-  id: String
-  from: String
-  amount0In: String
-  amount1In: String
+  id: string
+  from: string
+  amount0In: string
+  amount1In: string
 }
 
 export interface V3Swap {
-  id: String
-  origin: String
-  amount0: String
-  amount1: String
+  id: string
+  origin: string
+  amount0: string
+  amount1: string
+}
+
+export interface Liquidity {
+  id: string
+  timestamp: number
+  reserve0: string
+  reserve1: string
+}
+
+export interface V3Liquidity {
+  id: string
+  timestamp: string
+  owner: string
+  liquidity: string
 }
 
 export type SUBGRAPH_URL = typeof V1_SUBGRAPH_URL | typeof V2_SUBGRAPH_URL

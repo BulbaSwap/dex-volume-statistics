@@ -3,7 +3,7 @@ import { writeToPath } from 'fast-csv'
 import { readJson, writeJson } from 'fs-extra'
 import { delay } from './delay'
 import { V1_POOLS, V1_SUBGRAPH_URL, V2_POOLS, V2_SUBGRAPH_URL, V3_POOLS } from '../config'
-import { FIRST } from '../constants'
+import { EXCLUDE_ADDRESS, FIRST } from '../constants'
 import { getV1OrV2LiquiditySubgraph, getV3LiquiditySubgraph } from '../subgraph'
 
 const getV1OrV2Liquidity = async (
@@ -27,11 +27,13 @@ const getV1OrV2Liquidity = async (
   const tmpFileData = await readJson(tmpPath).catch(() => {})
   const obj = Object.assign({}, tmpFileData)
   data.forEach(item => {
-    const count = obj[item.to.toLowerCase()]
-    if (count) {
-      obj[item.to.toLowerCase()] = count + 1
-    } else {
-      obj[item.to.toLowerCase()] = 1
+    if (!EXCLUDE_ADDRESS.includes(item.to.toLowerCase())) {
+      const count = obj[item.to.toLowerCase()]
+      if (count) {
+        obj[item.to.toLowerCase()] = count + 1
+      } else {
+        obj[item.to.toLowerCase()] = 1
+      }
     }
   })
   await writeJson(tmpPath, obj)

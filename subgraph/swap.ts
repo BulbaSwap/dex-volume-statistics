@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../utils/axios'
 import { V3_SUBGRAPH_URL } from '../config/url'
 import { Swap, SUBGRAPH_URL, V3Swap } from '../interface'
 import { FIRST } from '../constants'
@@ -10,8 +10,9 @@ export const getV1OrV2SwapSubgraph = async (
   token1Amount: number,
   skip: number
 ): Promise<Swap[]> => {
-  const res = await axios.post(url, {
-    query: `
+  const res = await axios
+    .post(url, {
+      query: `
       {
         swaps(
           first: ${FIRST}
@@ -39,7 +40,14 @@ export const getV1OrV2SwapSubgraph = async (
         }
       }
       `
-  })
+    })
+    .catch(() => ({
+      data: {
+        data: {
+          swaps: []
+        }
+      }
+    }))
   return res?.data?.data?.swaps ?? []
 }
 
@@ -49,8 +57,9 @@ export const getV3SwapSubgraph = async (
   token1Amount: number,
   skip: number
 ): Promise<V3Swap[]> => {
-  const res = await axios.post(V3_SUBGRAPH_URL, {
-    query: `
+  const res = await axios
+    .post(V3_SUBGRAPH_URL, {
+      query: `
       {
         swaps(
           first: ${FIRST}
@@ -78,6 +87,13 @@ export const getV3SwapSubgraph = async (
         }
       }
       `
-  })
+    })
+    .catch(() => ({
+      data: {
+        data: {
+          swaps: []
+        }
+      }
+    }))
   return res?.data?.data?.swaps ?? []
 }

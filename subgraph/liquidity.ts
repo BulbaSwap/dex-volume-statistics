@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../utils/axios'
 import { V3_SUBGRAPH_URL } from '../config/url'
 import { SUBGRAPH_URL, Liquidity, V3Liquidity } from '../interface'
 import { FIRST } from '../constants'
@@ -10,8 +10,9 @@ export const getV1OrV2LiquiditySubgraph = async (
   token1Amount: number,
   skip: number
 ): Promise<Liquidity[]> => {
-  const res = await axios.post(url, {
-    query: `
+  const res = await axios
+    .post(url, {
+      query: `
       {
         mints(
           first: ${FIRST}
@@ -40,7 +41,14 @@ export const getV1OrV2LiquiditySubgraph = async (
         }
       }
       `
-  })
+    })
+    .catch(() => ({
+      data: {
+        data: {
+          mints: []
+        }
+      }
+    }))
   return res?.data?.data?.mints ?? []
 }
 
@@ -50,8 +58,9 @@ export const getV3LiquiditySubgraph = async (
   token1Amount: number,
   skip: number
 ): Promise<V3Liquidity[]> => {
-  const res = await axios.post(V3_SUBGRAPH_URL, {
-    query: `
+  const res = await axios
+    .post(V3_SUBGRAPH_URL, {
+      query: `
       {
         mints(
           first: ${FIRST}
@@ -80,6 +89,13 @@ export const getV3LiquiditySubgraph = async (
         }
       }
       `
-  })
+    })
+    .catch(() => ({
+      data: {
+        data: {
+          mints: []
+        }
+      }
+    }))
   return res?.data?.data?.mints ?? []
 }

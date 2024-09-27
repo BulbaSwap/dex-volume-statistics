@@ -1,6 +1,6 @@
-import path from 'path'
-import { remove } from 'fs-extra'
 import {
+  writeMEMELiquidityAddress,
+  writeMEMESwapAddress,
   writeV1LiquidityAddress,
   writeV1SwapAddress,
   writeV2LiquidityAddress,
@@ -9,41 +9,23 @@ import {
   writeV3SwapAddress
 } from '../utils'
 
-const writeSwapAddress = async (deleteTmp = true) => {
-  if (deleteTmp) {
-    const jsonV1SwapTmpPath = path.join(__dirname, '../data/v1/swap/tmp.json')
-    const jsonV2SwapTmpPath = path.join(__dirname, '../data/v2/swap/tmp.json')
-    const jsonV3SwapTmpPath = path.join(__dirname, '../data/v3/swap/tmp.json')
-
-    await remove(jsonV1SwapTmpPath).catch(() => {})
-    await remove(jsonV2SwapTmpPath).catch(() => {})
-    await remove(jsonV3SwapTmpPath).catch(() => {})
-  }
-
+const writeSwapAddress = async () => {
   await writeV1SwapAddress()
   await writeV2SwapAddress()
   await writeV3SwapAddress()
+  await writeMEMESwapAddress()
 }
 
-const writeLiquidityAddress = async (deleteTmp = true) => {
-  if (deleteTmp) {
-    const jsonV1LiquidityTmpPath = path.join(__dirname, '../data/v1/liquidity/tmp.json')
-    const jsonV2LiquidityTmpPath = path.join(__dirname, '../data/v2/liquidity/tmp.json')
-    const jsonV3LiquidityTmpPath = path.join(__dirname, '../data/v3/liquidity/tmp.json')
-
-    await remove(jsonV1LiquidityTmpPath).catch(() => {})
-    await remove(jsonV2LiquidityTmpPath).catch(() => {})
-    await remove(jsonV3LiquidityTmpPath).catch(() => {})
-  }
-
+const writeLiquidityAddress = async () => {
   await writeV1LiquidityAddress()
   await writeV2LiquidityAddress()
   await writeV3LiquidityAddress()
+  await writeMEMELiquidityAddress()
 }
 
 const main = async () => {
-  await writeSwapAddress(true)
-  await writeLiquidityAddress(true)
+  await writeSwapAddress()
+  await writeLiquidityAddress()
 }
 
 main()

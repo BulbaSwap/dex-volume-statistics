@@ -3,7 +3,7 @@
     "scripts": {
         "lint:fix": "prettier */*.ts \"*/**/*{.js,.ts}\" -w",
         "lint": "prettier */*.ts \"*/**/*{.js,.ts}\" --check",
-        "data": "ts-node scripts/data.ts",
+        "data": "rimraf data/**/**/*.json && ts-node scripts/data.ts",
         "total": "ts-node scripts/total.ts"
     },
     "dependencies": {
@@ -15,6 +15,7 @@
         "@types/node": "^20.14.5",
         "fast-csv": "^5.0.1",
         "prettier": "^2.6.2",
+        "rimraf": "5.0.10",
         "ts-node": "^10.9.2",
         "typescript": "^4.3.5"
     }

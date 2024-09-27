@@ -3,7 +3,7 @@ import { writeToPath } from 'fast-csv'
 import { readJson, writeJson } from 'fs-extra'
 import { AddressJson } from '../interface'
 
-const calcTotal = async (type: 'v1' | 'v2' | 'v3') => {
+const calcTotal = async (type: 'v1' | 'v2' | 'v3' | 'meme') => {
   const swapTmpPath = path.join(__dirname, `../data/${type}/swap/tmp.json`)
   const liquidityTmpPath = path.join(__dirname, `../data/${type}/liquidity/tmp.json`)
   const swapJsonData: AddressJson = await readJson(swapTmpPath).catch(() => {})
@@ -45,9 +45,11 @@ const calcAllTotal = async () => {
   const v1TmpPath = path.join(__dirname, '../data/v1/total/tmp.json')
   const v2TmpPath = path.join(__dirname, '../data/v2/total/tmp.json')
   const v3TmpPath = path.join(__dirname, '../data/v3/total/tmp.json')
+  const memeTmpPath = path.join(__dirname, '../data/meme/total/tmp.json')
   const v1JsonData: AddressJson = await readJson(v1TmpPath).catch(() => {})
   const v2JsonData: AddressJson = await readJson(v2TmpPath).catch(() => {})
   const v3JsonData: AddressJson = await readJson(v3TmpPath).catch(() => {})
+  const memeJsonData: AddressJson = await readJson(memeTmpPath).catch(() => {})
   const obj: AddressJson = Object.assign({}, v1JsonData)
   for (const [address, v2Count] of Object.entries(v2JsonData)) {
     const v1Count = obj[address]
@@ -63,6 +65,14 @@ const calcAllTotal = async () => {
       obj[address] = addressCount + v3Count
     } else {
       obj[address] = v3Count
+    }
+  }
+  for (const [address, memeCount] of Object.entries(memeJsonData)) {
+    const addressCount = obj[address]
+    if (addressCount) {
+      obj[address] = addressCount + memeCount
+    } else {
+      obj[address] = memeCount
     }
   }
   const tmpPath = path.join(__dirname, '../data/total/tmp.json')
@@ -93,6 +103,7 @@ const main = async () => {
   await calcTotal('v1')
   await calcTotal('v2')
   await calcTotal('v3')
+  await calcTotal('meme')
   await calcAllTotal()
 }
 

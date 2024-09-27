@@ -1,4 +1,4 @@
-import { V1_TOKENS, V2_TOKENS } from './tokens'
+import { MEME_TOKENS, V1_TOKENS, V2_TOKENS } from './tokens'
 
 export const V1_POOLS = {
   '0xfc391a10da60a6940f2d6d89d2b744aa4d796a68': {
@@ -150,5 +150,32 @@ export const V3_POOLS = {
   '0x9e5ab400737a51c077913a50762f4fc5f96006ef': {
     token0: V2_TOKENS.USDT,
     token1: V2_TOKENS.USDC
+  }
+}
+
+export const MEME_POOLS = {
+  '0x603bf8137ad5d7b168cd2869e76a16e3afd6278a': {
+    token0: MEME_TOKENS.WETH,
+    token1: MEME_TOKENS.KOALA
+  },
+  '0x2939725614c08d32ffb3111f414048b985b78b8c': {
+    token0: MEME_TOKENS.WETH,
+    token1: MEME_TOKENS.LEAF
+  },
+  '0xa2df6d27eb84f9eadb0394b932049a7f6f0e6023': {
+    token0: MEME_TOKENS.MFHat,
+    token1: MEME_TOKENS.WETH,
+  },
+  '0x42f15ccda5e8c9a5cc3c487b949f5bc058242e2d': {
+    token0: MEME_TOKENS.ROCKET,
+    token1: MEME_TOKENS.WETH
+  },
+  '0x50f81c4b83bf76440666a034977f2b5b17bce5e3': {
+    token0: MEME_TOKENS.WETH,
+    token1: MEME_TOKENS.FUEL
+  },
+  '0x83007a9bbfcf4b47591cd4de52649d747d17c402': {
+    token0: MEME_TOKENS.WETH,
+    token1: MEME_TOKENS.BOOM
   }
 }

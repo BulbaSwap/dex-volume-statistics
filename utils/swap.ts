@@ -2,12 +2,12 @@ import path from 'path'
 import { writeToPath } from 'fast-csv'
 import { readJson, writeJson } from 'fs-extra'
 import { delay } from './delay'
-import { V1_POOLS, V1_SUBGRAPH_URL, V2_POOLS, V2_SUBGRAPH_URL, V3_POOLS } from '../config'
+import { MEME_POOLS, V1_POOLS, V1_SUBGRAPH_URL, V2_POOLS, V2_SUBGRAPH_URL, V3_POOLS } from '../config'
 import { getV1OrV2SwapSubgraph, getV3SwapSubgraph } from '../subgraph'
 import { FIRST } from '../constants'
 
 const getV1OrV2Swap = async (
-  type: 'v1' | 'v2',
+  type: 'v1' | 'v2' | 'meme',
   pool: string,
   token0Amount: number,
   token1Amount: number,
@@ -111,6 +111,34 @@ export const writeV2SwapAddress = async () => {
     }
   })
   const outputPath = path.join(__dirname, '../data/v2/swap/address.csv')
+  writeToPath(outputPath, rows, { headers: ['Address', 'Count'] })
+    .on('finish', () => {
+      console.log('🚀 ~ CSV created:', outputPath)
+    })
+    .on('error', error => {
+      console.error('CSV create failed:', error)
+    })
+}
+
+export const writeMEMESwapAddress = async () => {
+  for (const [pool, tokens] of Object.entries(MEME_POOLS)) {
+    await getV1OrV2Swap('meme', pool, tokens.token0.minSwapAmount, tokens.token1.minSwapAmount, 0)
+  }
+  const tmpPath = path.join(__dirname, '../data/meme/swap/tmp.json')
+  const jsonData = await readJson(tmpPath).catch(() => {})
+  const arr: [string, number][] = Object.entries(jsonData)
+  const rows = arr.sort((a, b) => {
+    if (a[1] === b[1]) {
+      if (a[0] > b[0]) {
+        return 1
+      } else {
+        return -1
+      }
+    } else {
+      return b[1] - a[1]
+    }
+  })
+  const outputPath = path.join(__dirname, '../data/meme/swap/address.csv')
   writeToPath(outputPath, rows, { headers: ['Address', 'Count'] })
     .on('finish', () => {
       console.log('🚀 ~ CSV created:', outputPath)

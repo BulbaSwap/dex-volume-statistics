@@ -3,7 +3,7 @@
     "scripts": {
         "lint:fix": "prettier */*.ts \"*/**/*{.js,.ts}\" -w",
         "lint": "prettier */*.ts \"*/**/*{.js,.ts}\" --check",
-        "data": "rimraf data/**/**/*.json && ts-node scripts/data.ts",
+        "data": "rimraf -I data/**/**/*.json && ts-node scripts/data.ts",
         "total": "ts-node scripts/total.ts"
     },
     "dependencies": {
